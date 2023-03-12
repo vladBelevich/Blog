@@ -1,0 +1,10 @@
+@import 'src/services/style/Fonts';
+
+.logo_wrapper {
+  button {
+    background:none;
+    @extend %H6;
+    letter-spacing: 0;
+    text-align: left;
+  }
+}

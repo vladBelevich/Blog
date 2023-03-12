@@ -1,0 +1,26 @@
+@import 'src/services/style/Fonts';
+@import 'src/services/style/Colors';
+
+.authorizationPanel_wrapper {
+  display: flex;
+  justify-content: space-between;
+  .signInButton,
+  .signUpButton {
+    @extend %H6;
+    letter-spacing: 0;
+    text-align: left;
+    background: none;
+    margin-right: 19px;
+    padding: 6px 18px 10px;
+    border: 1px solid $background-color-base;
+  }
+  :hover {
+    color: $success-color;
+    border-color: $success-color;
+    border-radius: 5px;
+    transition: 0.2s;
+  }
+  :last-child {
+    margin-right: 0;
+  }
+}

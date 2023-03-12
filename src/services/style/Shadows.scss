@@ -1,0 +1,23 @@
+%shadow-2 {
+  background: #c4c4c4;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+%shadow-1-down {
+  background: #c4c4c4;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+%shadow-1-up {
+  background: #c4c4c4;
+  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.15);
+}
+
+%shadow-1-left {
+  background: #c4c4c4;
+  box-shadow: -2px 0 8px rgba(0, 0, 0, 0.15);
+}
+
+%shadow-1-right {
+  background: #c4c4c4;
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.15);
+}

@@ -1,0 +1,50 @@
+@import 'src/services/style/Fonts';
+@import 'src/services/style/Colors';
+
+.wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 26px;
+  .button {
+    @extend %H6;
+    letter-spacing: 0;
+    text-align: left;
+    background: none;
+    padding: 6px 18px 10px;
+    border: 1px solid $background-color-base;
+  }
+  .buttonCreate {
+    @extend %font-size-base;
+    letter-spacing: 0;
+    text-align: left;
+    background: none;
+    padding: 6px 10px;
+    border: 1px solid $background-color-base;
+  }
+  :hover {
+    color: $success-color;
+    border-color: $success-color;
+    border-radius: 5px;
+    transition: 0.2s;
+  }
+  :last-child {
+    margin-right: 0;
+  }
+  .profile {
+    display: flex;
+    align-items: center;
+    span {
+      @extend %H6;
+      color: $heading-color;
+      margin-right: 13px;
+    }
+    img {
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      object-fit: cover;
+      object-position: top;
+    }
+  }
+}

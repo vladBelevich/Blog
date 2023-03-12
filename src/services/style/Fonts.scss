@@ -1,0 +1,56 @@
+$main-font: 'Inter', sans-serif;
+$register-font: 'Roboto', sans-serif;
+
+%font-size-sm {
+  font-family: $main-font;
+  font-size: 12px;
+  line-height: 22px;
+}
+
+%font-size-base {
+  font-family: $main-font;
+  font-size: 14px;
+  line-height: 22px;
+}
+
+%font-size-lg {
+  font-family: $main-font;
+  font-size: 16px;
+  line-height: 22px;
+}
+
+%H6 {
+  font-family: $main-font;
+  font-size: 18px;
+  line-height: 28px;
+}
+
+%H5 {
+  font-family: $main-font;
+  font-size: 20px;
+  line-height: 28px;
+}
+
+%H4 {
+  font-family: $main-font;
+  font-size: 24px;
+  line-height: 32px;
+}
+
+%H3 {
+  font-family: $main-font;
+  font-size: 30px;
+  line-height: 36px;
+}
+
+%H2 {
+  font-family: $main-font;
+  font-size: 56px;
+  line-height: 64px;
+}
+
+%H1 {
+  font-family: $main-font;
+  font-size: 44px;
+  line-height: 76px;
+}

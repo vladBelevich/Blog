@@ -1,0 +1,97 @@
+@import 'src/services/style/Shadows';
+@import 'src/services/style/Colors';
+@import 'src/services/style/Fonts';
+
+.articlePreview_wrapper {
+  @extend %shadow-2;
+  background-color: $background-color-base;
+  border-radius: 5px;
+  padding: 15px 14px 24px 19px;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 26px;
+  width: 100%;
+  .label {
+    margin-right: 85px;
+    .title_wrapper {
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-start;
+      align-items: center;
+      margin-bottom: 6px;
+      .title_text {
+        margin-right: 13px;
+        @extend %H5;
+        color: $info-color;
+        background: none;
+        a:visited {
+          color: $info-color;
+        }
+      }
+      .title_likes {
+        @extend %font-size-sm;
+        color: $text-color;
+        .title_like {
+          vertical-align: middle;
+          height: 14.23486328125px;
+          width: 15.999969482421875px;
+          top: 0.875px;
+        }
+      }
+    }
+    .tag_wrapper {
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-start;
+      margin-bottom: 4px;
+      flex-wrap: wrap;
+      .tag_text {
+        padding: 2px 6px 3px 5px;
+        color: $text-color-secondary;
+        border: 1px solid $text-color-secondary;
+        border-radius: 2px;
+        margin-right: 8px;
+        font-family: 'Inter', serif;
+        font-size: 12px;
+        font-weight: 400;
+        line-height: 15px;
+        letter-spacing: 0;
+        text-align: left;
+      }
+      :hover {
+        padding: 2px 6px 3px 5px;
+        border: 1px solid $text-color;
+        color: $text-color;
+      }
+    }
+    .description_wrapper {
+      @extend %font-size-sm;
+      color: #000000bf;
+    }
+  }
+  .profile {
+    display: flex;
+    justify-content: flex-end;
+    flex-shrink: 0;
+    .profile_data {
+      margin-right: 12px;
+      .profile_name {
+        @extend %H6;
+        color: $heading-color;
+      }
+      .profile_date {
+        @extend %font-size-sm;
+        color: $text-color-secondary;
+      }
+    }
+    .profile_avatar {
+      img {
+        width: 46px;
+        height: 46px;
+        border-radius: 50%;
+        object-fit: cover;
+        object-position: top;
+      }
+    }
+  }
+}

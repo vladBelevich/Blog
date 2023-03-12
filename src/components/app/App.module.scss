@@ -1,0 +1,10 @@
+@import '../../services/style/Colors';
+.app_wrapper {
+  max-width: 754px;
+  margin: 0 auto;
+}
+@media (max-width: $mobile_width_screen) {
+  .app_wrapper {
+    width: 100%;
+  }
+}

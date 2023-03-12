@@ -1,0 +1,11 @@
+@import 'src/services/style/Colors';
+
+.header_wrapper {
+  display: flex;
+  padding: 0 23px;
+  background-color: $background-color-base;
+  height: 80px;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 26px;
+}
