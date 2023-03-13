@@ -10,23 +10,17 @@ import { format } from 'date-fns';
 import { v4 as uuidv4 } from 'uuid';
 
 function ArticleFull({ slug, loadingArticle, articleData, getArticleData }) {
-  useEffect(
-    () => {
-      async function getData(id) {
-        await getArticleData(id);
-      }
-      getData(slug);
-    },
-    // eslint-disable-next-line
-    []
-  );
+  useEffect(() => {
+    async function getData(id) {
+      await getArticleData(id);
+    }
+    getData(slug);
+  });
 
   let createdAt;
   if (articleData.createdAt) {
     createdAt = format(new Date(articleData.createdAt), 'MMMM d, y');
   }
-
-  // const updatedAt = format(new Date(articleData.updatedAt), 'MMMM d, y');
   const { author, description, favorited, favoritesCount, title, body } =
     articleData;
   const { image, username } = author;
@@ -36,6 +30,8 @@ function ArticleFull({ slug, loadingArticle, articleData, getArticleData }) {
     </div>
   ));
   const likeSrc = favorited ? unliked : liked;
+  // eslint-disable-next-line no-use-before-define
+  const editPanelView = EditPanel();
   const articleView = !loadingArticle ? (
     <div className={classes.articleFull_wrapper}>
       <div className={classes.label}>
@@ -51,13 +47,16 @@ function ArticleFull({ slug, loadingArticle, articleData, getArticleData }) {
         <ReactMarkdown>{body}</ReactMarkdown>
       </div>
       <div className={classes.profile}>
-        <div className={classes.profile_data}>
-          <div className={classes.profile_name}>{username}</div>
-          <div className={classes.profile_date}>{createdAt}</div>
+        <div className={classes.profileWrapper}>
+          <div className={classes.profile_data}>
+            <div className={classes.profile_name}>{username}</div>
+            <div className={classes.profile_date}>{createdAt}</div>
+          </div>
+          <div className={classes.profile_avatar}>
+            <img src={image} className={classes.avatar_image} alt='avatar' />
+          </div>
         </div>
-        <div className={classes.profile_avatar}>
-          <img src={image} className={classes.avatar_image} alt='avatar' />
-        </div>
+        {editPanelView}
       </div>
     </div>
   ) : null;
@@ -66,6 +65,19 @@ function ArticleFull({ slug, loadingArticle, articleData, getArticleData }) {
     <div>
       {loadingView}
       {articleView}
+    </div>
+  );
+}
+
+function EditPanel() {
+  return (
+    <div className={classes.editPanelWrapper}>
+      <button className={classes.delete} type='button'>
+        Delete
+      </button>
+      <button className={classes.edit} type='button'>
+        Edit
+      </button>
     </div>
   );
 }

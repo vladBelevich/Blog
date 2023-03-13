@@ -1,4 +1,4 @@
-import ArticleGet from '../../API/articleApi/ArticleGet';
+import ArticleGet from '../../API/articleApi/ArticleAPI';
 
 const ArticleApi = new ArticleGet();
 

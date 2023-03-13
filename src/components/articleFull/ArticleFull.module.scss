@@ -65,26 +65,51 @@
   }
   .profile {
     display: flex;
-    justify-content: flex-end;
+    flex-direction: column;
     flex-shrink: 0;
-    .profile_data {
-      margin-right: 12px;
-      .profile_name {
-        @extend %H6;
-        color: $heading-color;
+    .profileWrapper {
+      display: flex;
+      margin-bottom: 30px;
+      .profile_data {
+        margin-right: 12px;
+        .profile_name {
+          @extend %H6;
+          text-align: right;
+          color: $heading-color;
+        }
+        .profile_date {
+          @extend %font-size-sm;
+          color: $text-color-secondary;
+          text-align: right;
+        }
       }
-      .profile_date {
-        @extend %font-size-sm;
-        color: $text-color-secondary;
+      .profile_avatar {
+        img {
+          width: 46px;
+          height: 46px;
+          border-radius: 50%;
+          object-fit: cover;
+          object-position: top;
+        }
       }
     }
-    .profile_avatar {
-      img {
-        width: 46px;
-        height: 46px;
-        border-radius: 50%;
-        object-fit: cover;
-        object-position: top;
+    .editPanelWrapper {
+      display: flex;
+      gap: 12px;
+      button {
+        @extend %font-size-base;
+        padding: 6px 17px;
+        background-color: $background-color-base;
+        border: 1px solid black;
+        border-radius: 4px;
+      }
+      .delete{
+        color: $error-color;
+        border-color:$error-color;
+      }
+      .edit{
+        color:$success-color;
+        border-color: $success-color;
       }
     }
   }

@@ -1,116 +1,87 @@
 import classes from './ArticleCreate.module.scss';
-import UserAPI from '../../services/API/registerAPI/Register';
+import ArticleAPI from '../../services/API/articleApi/ArticleAPI';
 import * as actions from '../../services/redux/actions/Actions';
 import { useEffect, useState } from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import classNames from 'classnames';
 import { connect } from 'react-redux';
 import { v4 as uuidv4 } from 'uuid';
 
-function ArticleCreate({ setUserData }) {
-  const Register = new UserAPI();
+function ArticleCreate({ token, activeUser }) {
+  const ArticleCreator = new ArticleAPI();
 
-  const [usernameError, setUsernameError] = useState(false);
-  const [emailError, setEmailError] = useState(false);
-
+  const [tagKeys, setTagKeys] = useState([]);
   const history = useHistory();
 
-  const usernameErrorView = usernameError ? (
-    <p className={classes.errorMessage}>This name is already used</p>
-  ) : null;
-  const emailErrorView = emailError ? (
-    <p className={classes.errorMessage}>This email is already used</p>
-  ) : null;
+  useEffect(() => {
+    if (!activeUser) {
+      history.push('/sign-in');
+    }
+    // eslint-disable-next-line
+  }, [activeUser]);
 
   const {
     register,
+    resetField,
     formState: { isValid, errors },
     handleSubmit,
-    watch,
   } = useForm({ mode: 'onBlur' });
 
-  const [tags, setTags] = useState([]);
+  const handleClick = (name) => resetField(name);
   function deleteTag(key) {
-    let newArr = [...tags];
-    // eslint-disable-next-line
-    console.log(key);
-    newArr = newArr.filter((el) => {
-      console.log(el.key);
-      return el.key !== key;
+    setTagKeys((prevState) => {
+      const copyTagsKeys = [...prevState];
+      handleClick(`tag${key}`);
+      return copyTagsKeys.filter((el) => el !== key);
     });
-    // eslint-disable-next-line
-    console.log(newArr);
-    setTags(newArr);
   }
-  function addTag() {
-    let newArr = [...tags];
-    const key = uuidv4();
-    newArr = [
-      <div
-        key={key}
-        className={classNames(classes.tagControl, classes.tagInputs)}
-      >
+
+  const tagList = tagKeys.map((el) => (
+    <div key={el} className={classNames(classes.tagControl)}>
+      <div className={classes.tagInputs}>
         <input
           placeholder='Tag'
           className={classNames(classes.text, {
-            // eslint-disable-next-line no-undef
-            [classes.error]: errors.tag,
+            [classes.error]: errors[`tag${el}`],
           })}
           /* eslint-disable-next-line react/jsx-props-no-spreading,no-undef */
-          {...register('tag', {
-            maxLength: {
-              value: 50,
-              message: 'Max 50 symbols',
-            },
-          })}
+          {...register(`tag${el}`, {})}
         />
         <button
           onClick={() => {
-            deleteTag(key);
+            deleteTag(el);
           }}
           className={classes.delete}
           type='button'
         >
           Delete
         </button>
-      </div>,
-      ...newArr,
-    ];
-    setTags(newArr);
+      </div>
+    </div>
+  ));
+
+  function addTag() {
+    const newKey = uuidv4();
+    setTagKeys([newKey, ...tagKeys]);
   }
 
-  // const deleteItem = (id, array) => array.filter((el) => el.key !== id);
-
-  useEffect(() => {
-    const subscription = watch((value, { name, type }) => {
-      if (name === 'username' && type === 'change') {
-        setUsernameError(false);
-      }
-      if (name === 'email' && type === 'change') {
-        setEmailError(false);
-      }
-    });
-    return () => subscription.unsubscribe();
-  }, [watch, usernameError, emailError]);
-
   const onSubmit = async (data) => {
-    const { username, email, password } = data;
-    const result = await Register.registerUser(username, email, password);
+    const { title, shortDescription, text, ...tagsData } = data;
+    const tags = Object.values(tagsData).filter((el) => el !== undefined);
+    const result = await ArticleCreator.createArticle(
+      title,
+      shortDescription,
+      text,
+      tags,
+      token
+    );
     if (result.status === 200) {
-      const responseEmail = result.data.user.email;
-      const responseUsername = result.data.user.username;
-      const responseToken = result.data.user.token;
-      setUserData(responseUsername, responseEmail, responseToken);
       history.push('/articles');
-    } else if (result.response.status === 422) {
+    } else if (result.response.status !== 200) {
       const responseErrors = result.response.data.errors;
-      if (responseErrors.username) {
-        setUsernameError(true);
-      }
-      if (responseErrors.email) {
-        setEmailError(true);
-      }
+      // eslint-disable-next-line
+      console.log(responseErrors);
     }
   };
 
@@ -125,7 +96,7 @@ function ArticleCreate({ setUserData }) {
             <label>
               Title
               <input
-                className={classNames({ [classes.error]: errors.username })}
+                className={classNames({ [classes.error]: errors.title })}
                 type='text'
                 placeholder='Title'
                 /* eslint-disable-next-line react/jsx-props-no-spreading */
@@ -138,7 +109,6 @@ function ArticleCreate({ setUserData }) {
                 })}
               />
               <div className={classes.errorMessage}>
-                {usernameErrorView}
                 {errors?.title && <p>{errors?.title?.message || 'Error!'}</p>}
               </div>
             </label>
@@ -149,7 +119,9 @@ function ArticleCreate({ setUserData }) {
               <input
                 type='text'
                 placeholder='Title'
-                className={classNames({ [classes.error]: errors.email })}
+                className={classNames({
+                  [classes.error]: errors.shortDescription,
+                })}
                 /* eslint-disable-next-line react/jsx-props-no-spreading */
                 {...register('shortDescription', {
                   required: 'Input must be filled',
@@ -160,7 +132,6 @@ function ArticleCreate({ setUserData }) {
                 })}
               />
               <div className={classes.errorMessage}>
-                {emailErrorView}
                 {errors?.shortDescription && (
                   <p>{errors?.shortDescription?.message || 'Error!'}</p>
                 )}
@@ -191,29 +162,22 @@ function ArticleCreate({ setUserData }) {
           </div>
 
           <div className={classes.tagCreation}>
-            <label>
-              Tags
-              <div className={classes.tagInputs}>
-                {tags}
-                <button onClick={addTag} className={classes.add} type='button'>
-                  Add tag
-                </button>
-              </div>
-            </label>
+            <p>Tags</p>
+            <div className={classes.tagInputs}>
+              {tagList}
+              <button
+                onClick={() => addTag()}
+                className={classes.add}
+                type='button'
+              >
+                Add tag
+              </button>
+            </div>
           </div>
           <div className={classes.buttonWrapper}>
-            <button
-              disabled={!isValid}
-              className={classes.button}
-              type='submit'
-            >
-              Create
+            <button disabled={!isValid} type='submit'>
+              Send
             </button>
-          </div>
-          <div className={classes.footer}>
-            <span>
-              Already have an account? <Link to='/sign-in'>Sign In.</Link>
-            </span>
           </div>
         </div>
       </form>
@@ -221,4 +185,9 @@ function ArticleCreate({ setUserData }) {
   );
 }
 
-export default connect(null, actions)(ArticleCreate);
+const mapStateToProps = (state) => {
+  const { token, activeUser } = state.userReducer;
+  return { token, activeUser };
+};
+
+export default connect(mapStateToProps, actions)(ArticleCreate);
