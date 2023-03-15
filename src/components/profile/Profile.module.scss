@@ -6,13 +6,18 @@
   justify-content: space-between;
   align-items: center;
   gap: 26px;
-  .button {
+  .buttonLogout {
     @extend %H6;
     letter-spacing: 0;
     text-align: left;
     background: none;
     padding: 6px 18px 10px;
     border: 1px solid $background-color-base;
+  }
+  .buttonLogout:hover {
+    border-color: $heading-color;
+    border-radius: 5px;
+    transition: 0.2s;
   }
   .buttonCreate {
     @extend %font-size-base;
@@ -21,9 +26,9 @@
     background: none;
     padding: 6px 10px;
     border: 1px solid $background-color-base;
-  }
-  :hover {
     color: $success-color;
+  }
+  .buttonCreate:hover {
     border-color: $success-color;
     border-radius: 5px;
     transition: 0.2s;

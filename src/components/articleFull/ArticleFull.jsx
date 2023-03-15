@@ -3,35 +3,89 @@ import * as actions from '../../services/redux/actions/Actions';
 import unliked from '../../services/style/Icons/Unliked.svg';
 import liked from '../../services/style/Icons/Liked.svg';
 import LoadingSpinner from '../loadingSpinner';
+import ArticleAPI from '../../services/API/articleApi/ArticleAPI';
 import ReactMarkdown from 'react-markdown';
 import { connect } from 'react-redux';
 import { useEffect } from 'react';
 import { format } from 'date-fns';
 import { v4 as uuidv4 } from 'uuid';
+import { Button, Popconfirm } from 'antd';
+import { useHistory } from 'react-router-dom';
 
-function ArticleFull({ slug, loadingArticle, articleData, getArticleData }) {
+function ArticleFull({
+  username,
+  slug,
+  loadingArticle,
+  articleData,
+  getArticleData,
+  token,
+}) {
   useEffect(() => {
     async function getData(id) {
       await getArticleData(id);
     }
     getData(slug);
-  });
+    // eslint-disable-next-line
+  }, [slug]);
+
+  const history = useHistory();
+
+  const ArticleNet = new ArticleAPI();
+
+  const editPanel = (
+    <div className={classes.editPanelWrapper}>
+      <Popconfirm
+        title='Are you sure to delete this article?'
+        placement='rightTop'
+        onConfirm={async () => {
+          const result = await ArticleNet.deleteArticle(slug, token);
+          if (result.status === 204) {
+            history.push('/articles');
+          } else {
+            // eslint-disable-next-line
+            console.log(result);
+          }
+        }}
+      >
+        <Button danger>Delete</Button>
+      </Popconfirm>
+
+      <Button
+        onClick={() => {
+          history.push({
+            pathname: `${slug}/edit`,
+            state: { articleData, slug },
+          });
+        }}
+        className={classes.edit}
+        colorPrimaryActive='#ff4d4f'
+      >
+        Edit
+      </Button>
+    </div>
+  );
 
   let createdAt;
   if (articleData.createdAt) {
     createdAt = format(new Date(articleData.createdAt), 'MMMM d, y');
   }
-  const { author, description, favorited, favoritesCount, title, body } =
-    articleData;
-  const { image, username } = author;
-  const tagListView = articleData.tagList.map((el) => (
+  const {
+    author,
+    description,
+    favorited,
+    favoritesCount,
+    title,
+    body,
+    tagList,
+  } = articleData;
+  const { image, username: authorUsername } = author;
+  const tagListView = tagList.map((el) => (
     <div className={classes.tag_text} key={uuidv4()}>
       {el}
     </div>
   ));
+  const editPanelView = username === authorUsername ? editPanel : null;
   const likeSrc = favorited ? unliked : liked;
-  // eslint-disable-next-line no-use-before-define
-  const editPanelView = EditPanel();
   const articleView = !loadingArticle ? (
     <div className={classes.articleFull_wrapper}>
       <div className={classes.label}>
@@ -49,7 +103,7 @@ function ArticleFull({ slug, loadingArticle, articleData, getArticleData }) {
       <div className={classes.profile}>
         <div className={classes.profileWrapper}>
           <div className={classes.profile_data}>
-            <div className={classes.profile_name}>{username}</div>
+            <div className={classes.profile_name}>{authorUsername}</div>
             <div className={classes.profile_date}>{createdAt}</div>
           </div>
           <div className={classes.profile_avatar}>
@@ -69,22 +123,10 @@ function ArticleFull({ slug, loadingArticle, articleData, getArticleData }) {
   );
 }
 
-function EditPanel() {
-  return (
-    <div className={classes.editPanelWrapper}>
-      <button className={classes.delete} type='button'>
-        Delete
-      </button>
-      <button className={classes.edit} type='button'>
-        Edit
-      </button>
-    </div>
-  );
-}
-
 const mapStateToProps = (state) => {
   const { articleData, loadingArticle } = state.dataReducer;
-  return { articleData, loadingArticle };
+  const { username, token } = state.userReducer;
+  return { username, articleData, loadingArticle, token };
 };
 
 export default connect(mapStateToProps, actions)(ArticleFull);

@@ -7,6 +7,9 @@ export const setDataArticle = (data) => ({
   type: 'SET_DATA_ARTICLE',
   data,
 });
+export const clearDataArticle = () => ({
+  type: 'CLEAR_DATA_ARTICLE',
+});
 
 export const setUserData = (username, email, token) => {
   window.localStorage.setItem('username', username);

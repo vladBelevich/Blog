@@ -37,6 +37,12 @@ const dataReducer = (state = defaultState, action) => {
         loadingArticle: false,
       };
     }
+    case 'CLEAR_DATA_ARTICLE': {
+      return {
+        ...state,
+        articleData: { author: {}, tagList: [] },
+      };
+    }
     default:
       return state;
   }

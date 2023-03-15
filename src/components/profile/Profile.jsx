@@ -21,7 +21,7 @@ function Profile({ username, clearUserData, image }) {
       </Link>
       <button
         onClick={() => clearUserData()}
-        className={classes.button}
+        className={classes.buttonLogout}
         type='button'
       >
         Log Out

@@ -96,13 +96,6 @@
     .editPanelWrapper {
       display: flex;
       gap: 12px;
-      button {
-        @extend %font-size-base;
-        padding: 6px 17px;
-        background-color: $background-color-base;
-        border: 1px solid black;
-        border-radius: 4px;
-      }
       .delete{
         color: $error-color;
         border-color:$error-color;
@@ -110,6 +103,9 @@
       .edit{
         color:$success-color;
         border-color: $success-color;
+      }
+      .edit:hover{
+        opacity: 0.8;
       }
     }
   }

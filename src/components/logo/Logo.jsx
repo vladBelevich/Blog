@@ -3,11 +3,17 @@ import * as actions from '../../services/redux/actions/Actions';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 
-function Logo({ setPage }) {
+function Logo({ setPage, clearDataArticle }) {
   return (
     <div className={classes.logo_wrapper}>
       <Link to='/'>
-        <button type='button' onClick={() => setPage(1)}>
+        <button
+          type='button'
+          onClick={() => {
+            setPage(1);
+            clearDataArticle();
+          }}
+        >
           Realworld Blog
         </button>
       </Link>

@@ -37,4 +37,42 @@ export default class ArticleAPI {
       return e;
     }
   }
+
+  async editArticle(title, description, body, tagList, slug, token) {
+    try {
+      return await axios({
+        method: 'put',
+        baseURL: this.API,
+        url: `articles/${slug}`,
+        headers: {
+          Authorization: `Token ${token}`,
+        },
+        data: {
+          article: {
+            title,
+            description,
+            body,
+            tagList,
+          },
+        },
+      });
+    } catch (e) {
+      return e;
+    }
+  }
+
+  async deleteArticle(slug, token) {
+    try {
+      return await axios({
+        method: 'delete',
+        baseURL: this.API,
+        url: `articles/${slug}`,
+        headers: {
+          Authorization: `Token ${token}`,
+        },
+      });
+    } catch (e) {
+      return e;
+    }
+  }
 }
