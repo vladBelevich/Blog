@@ -17,10 +17,14 @@ function ArticleList({
   useEffect(() => {
     getArticlesData(offset, loadingArticles);
     // eslint-disable-next-line
-  }, [offset]);
+  }, [offset,loadingArticles]);
 
   const articles = articlesData.map((el) => (
-    <ArticlePreview data={el} key={uuidv4()} />
+    <ArticlePreview
+      viewNumber={articlesData.indexOf(el)}
+      data={el}
+      key={uuidv4()}
+    />
   ));
   const loadingView = loadingArticles ? <LoadingSpinner /> : null;
   return (

@@ -54,7 +54,7 @@ function ArticleChange({
   }
 
   function addTag() {
-    const newTag = { key: uuidv4(), value: '' };
+    const newTag = { key: uuidv4(), tag: '' };
     setTagList([newTag, ...tagList]);
   }
 
@@ -64,10 +64,10 @@ function ArticleChange({
         <input
           placeholder='Tag'
           className={classNames(classes.text, {
-            [classes.error]: errors[`tag${Object.keys(el)[0]}`],
+            [classes.error]: errors[`tag${el.key}`],
           })}
           /* eslint-disable-next-line react/jsx-props-no-spreading,no-undef */
-          {...register(`tag${el.tag}`, {
+          {...register(`tag${el.key}`, {
             value: el.tag,
           })}
         />
@@ -99,6 +99,7 @@ function ArticleChange({
       if (resultEditing.status === 200) {
         history.push('/articles');
       } else if (resultEditing.response.status !== 200) {
+        // eslint-disable-next-line
         console.log(resultEditing);
       }
     } else {
@@ -112,6 +113,7 @@ function ArticleChange({
       if (resultCreating.status === 200) {
         history.push('/articles');
       } else if (resultCreating.response.status !== 200) {
+        // eslint-disable-next-line
         console.log(resultCreating);
       }
     }

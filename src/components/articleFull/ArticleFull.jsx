@@ -1,9 +1,8 @@
 import classes from './ArticleFull.module.scss';
 import * as actions from '../../services/redux/actions/Actions';
-import unliked from '../../services/style/Icons/Unliked.svg';
-import liked from '../../services/style/Icons/Liked.svg';
 import LoadingSpinner from '../loadingSpinner';
 import ArticleAPI from '../../services/API/articleApi/ArticleAPI';
+import LikeButtonOnFull from '../likeButton/LikeButtonOnFull';
 import ReactMarkdown from 'react-markdown';
 import { connect } from 'react-redux';
 import { useEffect } from 'react';
@@ -19,6 +18,7 @@ function ArticleFull({
   articleData,
   getArticleData,
   token,
+  activeUser,
 }) {
   useEffect(() => {
     async function getData(id) {
@@ -85,16 +85,18 @@ function ArticleFull({
     </div>
   ));
   const editPanelView = username === authorUsername ? editPanel : null;
-  const likeSrc = favorited ? unliked : liked;
   const articleView = !loadingArticle ? (
     <div className={classes.articleFull_wrapper}>
       <div className={classes.label}>
         <div className={classes.title_wrapper}>
           <div className={classes.title_text}>{title}</div>
-          <div className={classes.title_likes}>
-            <img className={classes.title_like} src={likeSrc} alt='likes' />
-            {favoritesCount}
-          </div>
+          <LikeButtonOnFull
+            favoritesCount={favoritesCount}
+            favorited={favorited}
+            activeUser={activeUser}
+            slug={slug}
+            token={token}
+          />
         </div>
         <div className={classes.tag_wrapper}>{tagListView}</div>
         <div className={classes.description_wrapper}>{description}</div>
@@ -125,8 +127,8 @@ function ArticleFull({
 
 const mapStateToProps = (state) => {
   const { articleData, loadingArticle } = state.dataReducer;
-  const { username, token } = state.userReducer;
-  return { username, articleData, loadingArticle, token };
+  const { username, activeUser, token } = state.userReducer;
+  return { username, activeUser, articleData, loadingArticle, token };
 };
 
 export default connect(mapStateToProps, actions)(ArticleFull);

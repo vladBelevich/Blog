@@ -37,6 +37,18 @@ const dataReducer = (state = defaultState, action) => {
         loadingArticle: false,
       };
     }
+    case 'SET_LIKE_ON_PREVIEW': {
+      return {
+        ...state,
+        articlesData: action.articlesData,
+      };
+    }
+    case 'SET_LIKE_ON_FULL': {
+      return {
+        ...state,
+        articleData: action.articleData,
+      };
+    }
     case 'CLEAR_DATA_ARTICLE': {
       return {
         ...state,

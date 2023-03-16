@@ -75,4 +75,20 @@ export default class ArticleAPI {
       return e;
     }
   }
+
+  async setLike(slug, token, isFavorited) {
+    const method = isFavorited ? 'delete' : 'post';
+    try {
+      return await axios({
+        method,
+        baseURL: this.API,
+        url: `articles/${slug}/favorite`,
+        headers: {
+          Authorization: `Token ${token}`,
+        },
+      });
+    } catch (e) {
+      return e;
+    }
+  }
 }

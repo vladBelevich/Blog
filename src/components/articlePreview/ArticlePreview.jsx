@@ -1,25 +1,31 @@
 import classes from './ArticlePreview.module.scss';
-import unliked from '../../services/style/Icons/Unliked.svg';
-import liked from '../../services/style/Icons/Liked.svg';
 import * as actions from '../../services/redux/actions/Actions';
+import LikeButtonOnPreview from '../likeButton/LikeButtonOnPreview';
 import { format } from 'date-fns';
 import { v4 as uuidv4 } from 'uuid';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 
-function ArticlePreview({ data, setLoadingArticle }) {
-  // console.log(data);
-  const createdAt = format(new Date(data.createdAt), 'MMMM d, y');
-  // const updatedAt = format(new Date(data.updatedAt), 'MMMM d, y');
-  const { author, description, favorited, favoritesCount, slug, title } = data;
+function ArticlePreview({
+  data,
+  setLoadingArticle,
+  activeUser,
+  token,
+  viewNumber,
+}) {
+  const [dataArticle, setDataArticle] = useState(data);
+  const createdAt = format(new Date(dataArticle.createdAt), 'MMMM d, y');
+  const { author, description, favorited, slug, title, favoritesCount } =
+    dataArticle;
   const { image, username } = author;
-  const tagListView = data.tagList.map((el) => (
+  const tagListView = dataArticle.tagList.map((el) => (
     <div className={classes.tag_text} key={uuidv4()}>
       {el}
     </div>
   ));
-  const likeSrc = favorited ? unliked : liked;
-
+  // eslint-disable-next-line
+  useEffect(() => setDataArticle(data), [image]);
   return (
     <div className={classes.articlePreview_wrapper}>
       <div className={classes.label}>
@@ -31,18 +37,22 @@ function ArticlePreview({ data, setLoadingArticle }) {
           >
             <Link to={`articles/${slug}`}>{title}</Link>
           </button>
-          <div className={classes.title_likes}>
-            <img className={classes.title_like} src={likeSrc} alt='likes' />
-            {favoritesCount}
-          </div>
+          <LikeButtonOnPreview
+            favoritesCount={favoritesCount}
+            favorited={favorited}
+            activeUser={activeUser}
+            slug={slug}
+            token={token}
+            viewNumber={viewNumber}
+          />
         </div>
         <div className={classes.tag_wrapper}>{tagListView}</div>
         <div className={classes.description_wrapper}>{description}</div>
       </div>
       <div className={classes.profile}>
         <div className={classes.profile_data}>
-          <div className={classes.profile_name}>{username}</div>
-          <div className={classes.profile_date}>{createdAt}</div>
+          <p className={classes.profile_name}>{username}</p>
+          <p className={classes.profile_date}>{createdAt}</p>
         </div>
         <div className={classes.profile_avatar}>
           <img src={image} className={classes.avatar_image} alt='avatar' />
@@ -54,7 +64,8 @@ function ArticlePreview({ data, setLoadingArticle }) {
 
 const mapStateToProps = (state) => {
   const { loadingArticle } = state.dataReducer;
-  return { loadingArticle };
+  const { activeUser, token } = state.userReducer;
+  return { loadingArticle, activeUser, token };
 };
 
 export default connect(mapStateToProps, actions)(ArticlePreview);

@@ -1,6 +1,6 @@
 import classes from '../style/Account.module.scss';
 import * as actions from '../../../services/redux/actions/Actions';
-import UserAPI from '../../../services/API/registerAPI/Register';
+import UserAPI from '../../../services/API/userAPI/UserAPI';
 import { useForm } from 'react-hook-form';
 import { connect } from 'react-redux';
 import { Link, useHistory } from 'react-router-dom';
@@ -111,7 +111,7 @@ function AccountRegister({ setUserData }) {
                   required: 'Input must be filled',
                   pattern: {
                     value:
-                      /([a-z0/d_-]+\.)*[a-z/d_-]+@[a-z/d_-]+(\.[a-z/d_-]+)*\.[a-z]{2,6}/,
+                      /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/g,
                     message: 'Invalid mail address',
                   },
                 })}

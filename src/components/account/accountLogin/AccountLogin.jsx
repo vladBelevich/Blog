@@ -68,7 +68,7 @@ function AccountLogin({ setUserData }) {
                   required: 'Input must be filled',
                   pattern: {
                     value:
-                      /([a-z0/d_-]+\.)*[a-z/d_-]+@[a-z/d_-]+(\.[a-z/d_-]+)*\.[a-z]{2,6}/,
+                      /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/g,
                     message: 'Invalid mail address',
                   },
                 })}

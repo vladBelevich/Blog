@@ -24,18 +24,10 @@
         @extend %H5;
         color: $info-color;
         background: none;
+        max-width: 300px;
+        overflow: hidden;
         a:visited {
           color: $info-color;
-        }
-      }
-      .title_likes {
-        @extend %font-size-sm;
-        color: $text-color;
-        .title_like {
-          vertical-align: middle;
-          height: 14.23486328125px;
-          width: 15.999969482421875px;
-          top: 0.875px;
         }
       }
     }
@@ -75,6 +67,7 @@
     flex-shrink: 0;
     .profile_data {
       margin-right: 12px;
+      text-align: right;
       .profile_name {
         @extend %H6;
         color: $heading-color;

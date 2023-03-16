@@ -10,6 +10,14 @@ export const setDataArticle = (data) => ({
 export const clearDataArticle = () => ({
   type: 'CLEAR_DATA_ARTICLE',
 });
+export const setLikeOnPreview = (articlesData) => ({
+  type: 'SET_LIKE_ON_PREVIEW',
+  articlesData,
+});
+export const setLikeOnFull = (articleData) => ({
+  type: 'SET_LIKE_ON_FULL',
+  articleData,
+});
 
 export const setUserData = (username, email, token) => {
   window.localStorage.setItem('username', username);

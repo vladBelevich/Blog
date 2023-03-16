@@ -104,6 +104,7 @@ textarea {
   align-items: flex-end;
   margin-top: 5px;
   input {
+    @extend %font-size-lg;
     width: 300px;
     margin-right: 17px;
   }
